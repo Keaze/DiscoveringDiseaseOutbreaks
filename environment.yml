@@ -1,0 +1,19 @@
+name: outbreaks
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pandas=*
+  - numpy=*
+  - scikit-learn=*
+  - basemap=*
+  - matplotlib=*
+  - seaborn=*
+  - Unidecode=*
+  - pip=*
+  - Pillow=*
+  - jupyter=*
+  - jupyter_contrib_nbextensions=*
+  - nbconvert=*
+  - pip:
+      - geonamescache==*
