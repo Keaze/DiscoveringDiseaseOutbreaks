@@ -1,10 +1,25 @@
 import geonamescache as gnc
 import unidecode
 
-city_accent_mapping = {
-    unidecode.unidecode(x['name']): x['name'] for x in gnc.GeonamesCache().get_cities().values()
-}
 
+class CityFactory():
+    def __init__(self):
+        self.city_accent_mapping = {
+            unidecode.unidecode(x['name']): x['name'] for x in gnc.GeonamesCache().get_cities().values()
+        }
+        self.gc = gnc.GeonamesCache()
+
+    def from_name(self, name: str):
+        if name is None:
+            return City(None)
+        try:
+            decoded_city = self.city_accent_mapping[unidecode.unidecode(name)]
+        except KeyError:
+            return City(None)
+        city_list = self.gc.get_cities_by_name(decoded_city)
+        city_list.sort(key=lambda entry: max([y["population"] for (_, y) in entry.items()]), reverse=True)
+        for (_, data) in city_list[0].items():
+            return City(data)
 
 class City:
     def __init__(self, data):
@@ -23,16 +38,3 @@ class City:
 
         return self.name, self.country_code, self.latitude, self.longitude
 
-    @classmethod
-    def from_name(cls, name: str):
-        if name is None:
-            return City(None)
-        gc = gnc.GeonamesCache()
-        try:
-            decoded_city = city_accent_mapping[unidecode.unidecode(name)]
-        except KeyError:
-            return City(None)
-        city_list = gc.get_cities_by_name(decoded_city)
-        city_list.sort(key=lambda entry: max([y["population"] for (_, y) in entry.items()]), reverse=True)
-        for (_, data) in city_list[0].items():
-            return City(data)
