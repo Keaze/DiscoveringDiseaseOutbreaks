@@ -1,6 +1,7 @@
 import re
 
 import geonamescache
+import unidecode
 
 
 class LocationFinder():
@@ -14,7 +15,7 @@ class LocationFinder():
 
 def create_city_finder():
     result = list(
-        [x["name"] for x in geonamescache.GeonamesCache().get_cities().values()]
+        [unidecode.unidecode(x["name"]) for x in geonamescache.GeonamesCache().get_cities().values()]
     )
     regex_compiled = _compile_regex(result)
     return LocationFinder(regex_compiled)
@@ -22,7 +23,7 @@ def create_city_finder():
 
 def create_country_finder():
     result = list(
-        [x["name"] for x in geonamescache.GeonamesCache().get_countries().values()]
+        [unidecode.unidecode(x["name"]) for x in geonamescache.GeonamesCache().get_countries().values()]
     )
     regex_compiled = _compile_regex(result)
     return LocationFinder(regex_compiled)
