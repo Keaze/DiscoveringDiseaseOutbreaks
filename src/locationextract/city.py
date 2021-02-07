@@ -2,14 +2,14 @@ import geonamescache as gnc
 import unidecode
 
 
-class CityFactory():
+class CityFromName:
     def __init__(self):
         self.city_accent_mapping = {
             unidecode.unidecode(x['name']): x['name'] for x in gnc.GeonamesCache().get_cities().values()
         }
         self.gc = gnc.GeonamesCache()
 
-    def from_name(self, name: str):
+    def create(self, name: str):
         if name is None:
             return City(None)
         try:
