@@ -1,5 +1,5 @@
-import locationextract.geolocator as gl
-from locationextract.geolocator import City
+import locationextract.city as gl
+from locationextract.city import City
 
 
 def test_find_country_code():
