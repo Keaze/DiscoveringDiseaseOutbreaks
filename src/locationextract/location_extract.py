@@ -9,8 +9,12 @@ class LocationFinder():
         self.regex = regex
 
     def find(self, string):
-        s = re.finditer(self.regex, string)
-        return list(x.group() for x in s)
+        normalized_input = unidecode.unidecode(string)
+        s = re.finditer(self.regex, normalized_input)
+        try:
+            return next(s).group()
+        except StopIteration:
+            return None
 
 
 def create_city_finder():
@@ -37,7 +41,7 @@ def _compile_regex(result):
     return regex_compiled
 
 
-def find_countries(string):
+def find_country(string):
     """
     Returns the countries listed in an input string
     :return: List of countries in the input string
@@ -49,10 +53,10 @@ def extract_locations(string):
     """
     Extracts city and country names from an input string
     """
-    return find_cities(string) + find_countries(string)
+    return find_city(string) + find_country(string)
 
 
-def find_cities(string):
+def find_city(string):
     """
     Returns the cities listed in an input string
     :return: List of cities in the input string
@@ -61,4 +65,4 @@ def find_cities(string):
 
 
 if __name__ == "__main__":
-    print(find_countries("Germany"))
+    print(find_country("Germany"))
