@@ -14,6 +14,11 @@ def test_find_city_with_two_words():
     assert "San Francisco" in result
 
 
+def test_find_city_non_unicode():
+    result = find_city("Mörön")
+    assert "Moron" in result
+
+
 def test_find_another_city():
     result = find_city("Vienna")
     assert "Vienna" in result
